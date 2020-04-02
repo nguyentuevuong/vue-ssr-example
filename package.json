@@ -1,0 +1,38 @@
+{
+  "name": "vue-ssr-example",
+  "description": "A Vue.js project",
+  "version": "1.0.0",
+  "author": "Nguyễn Tuệ Vương <vungtroixa@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:server && npm run build:client",
+    "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress --hide-modules",
+    "build:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --progress --hide-modules"
+  },
+  "dependencies": {
+    "vue": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "7.9.0",
+    "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.4.2",
+    "express": "^4.17.1",
+    "file-loader": "^6.0.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "vue-loader": "^15.9.1",
+    "vue-server-renderer": "^2.6.11",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
