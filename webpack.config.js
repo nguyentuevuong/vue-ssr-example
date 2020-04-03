@@ -2,15 +2,22 @@ var path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 
 const VueCSRPlugins = require('vue-server-renderer/client-plugin');
+const VueSSRPlugins = require('vue-server-renderer/server-plugin');
+
+const NODE_ENV = process.env.NODE_ENV;
+const BUILD_MODE = process.env.BUILD_MODE;
+const dependencies = require('./package.json').dependencies;
 
 module.exports = {
-  entry: './src/main.client.js',
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map',
+  target: BUILD_MODE === 'server' ? 'node' : undefined,
+  entry: `./src/main.${BUILD_MODE}.js`,
+  mode: NODE_ENV === 'production' ? 'production' : 'development',
+  devtool: NODE_ENV === 'production' ? undefined : 'eval-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'build.js',
     publicPath: '/',
+    libraryTarget: BUILD_MODE === 'server' ? 'commonjs2' : undefined
   },
   module: {
     rules: [
@@ -87,9 +94,11 @@ module.exports = {
   performance: {
     hints: false
   },
+  // Avoids bundling external dependencies, so node can load them directly from node_modules/
+  externals: BUILD_MODE === 'server' ? Object.keys(dependencies) : undefined,
   plugins: [
-    new VueCSRPlugins(),
     // make sure to include the plugin for the magic
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    BUILD_MODE === 'server' ? new VueSSRPlugins() : new VueCSRPlugins(),
   ]
 }

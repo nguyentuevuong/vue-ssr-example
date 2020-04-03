@@ -29,4 +29,6 @@ app.get('*', (req, res) => {
 });
 
 // Bind the app to this port.
-app.listen(8080);
+app.listen(8080, () => {
+    console.log('Server run at: http://localhost:8080');
+});
